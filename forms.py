@@ -1,8 +1,4 @@
-from ast import Str
-from tkinter import E
-from tkinter.tix import InputOnly
-from tokenize import String
-from wsgiref.types import InputStream
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Email, Length

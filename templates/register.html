@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
  
-{% title block %} Register {% endblock %}
+{% block title %} Register {% endblock %}
 
 
-{% content block %}
+{% block content %}
 
     <h1>Sign Up</h1>
 
@@ -23,6 +23,7 @@
         </span>
 
         {% endfor %}
+        <button>Register</button>
 
     </form>
 

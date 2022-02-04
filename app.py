@@ -5,7 +5,7 @@ from forms import CreateUserForm, LoginUserForm
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] +"quiinnfhyeteenhcllskjf7199275364l"
+app.config["SECRET_KEY"] = "quiinnfhyeteenhcllskjf7199275364l"
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql:///flask-feedback'
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -79,7 +79,7 @@ def logout_user():
 def get_secret_page():
     """Gets the secret web page"""
 
-    if "usename" not in session:
+    if "username" not in session:
         flash("Please Login In")
         return redirect("/login")
     else:
