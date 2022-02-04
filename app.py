@@ -58,12 +58,13 @@ def get_login_form():
 
         if user:
             session["username"] = user.username
-            redirect("/secret")
+            return redirect(f"/users/{user.username}")
         else:
             flash("Wrong username/password")
-        
 
     return render_template("login.html", form=form)
+
+
 
 
 @app.route("/logout", methods=["POST"])
@@ -84,6 +85,19 @@ def get_secret_page():
         return redirect("/login")
     else:
         return render_template("secret.html")
+
+
+
+@app.route("/users/<username>")
+def get_user_details(username):
+
+    user = User.query.filter_by(username=username).first()
+
+    if "username" not in session:
+        flash("Please Login In")
+        return redirect("/login")
+    else:
+        return render_template("user_details.html", user=user)
 
 
 # --------------------------------------

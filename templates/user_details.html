@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+ 
+{% block title  %} {{user.username}} {% endblock %}
+
+
+{% block content %}
+
+
+    <h1>Welcome {{user.username}}</h1>
+
+    <ul style="list-style-type: none;">
+        <li>{{user.username}}</li>
+        <li>{{user.email}}</li>
+        <li>{{user.first_name}}</li>
+        <li>{{user.last_name}}</li>
+    </ul>
+
+    <form action="/logout", method="POST">
+        <button>Logout</button>
+    </form>
+
+
+{% endblock %}
