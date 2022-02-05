@@ -8,6 +8,16 @@
 
     <h1>Welcome {{user.username}}</h1>
 
+    <nav>
+        <form action="/logout", method="POST">
+            <button>Logout</button>
+        </form>
+        <form action="/users/{{user.username}}/delete", method="POST">
+            <button style="color: darkred">Delete User</button>
+        </form>
+    </nav>
+
+
     <ul style="list-style-type: none;">
         <li>{{user.username}}</li>
         <li>{{user.email}}</li>
@@ -15,9 +25,14 @@
         <li>{{user.last_name}}</li>
     </ul>
 
-    <form action="/logout", method="POST">
-        <button>Logout</button>
+    <form action="/users/{{user.username}}/feedback/add">
+        <button>Add Feedback</button>
     </form>
 
-
+    <ul>
+        {% for data in feedback %}
+            <li>{{data.title}}</li>
+        {% endfor %}
+    </ul>
+    
 {% endblock %}

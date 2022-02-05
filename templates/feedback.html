@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+ 
+{% block title  %} Add Feedback {% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- <form action="/users/{{user.username}}/add", method="POST">
+
+    
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+
+    <span>
+        {{field.label}}
+        {{field}}
+
+        {% for error in field.errors %}
+        {{error}}
+        {% endfor %}
+    </span>
+
+    {% endfor %}
+    <button>Submit</button>
+
+</form>  -->
+
+
+
+<form action="/users/{{user.username}}/feedback/add", method="POST">
+
+    <label for="title">
+        Title
+        <input type=text name="title">
+    </label>
+    <label for="content">
+        Content
+        <textarea col="20", row="30" name=content></textarea>
+    </label>
+
+    <button>Submit</button>
+</form>
+
+{% endblock %}

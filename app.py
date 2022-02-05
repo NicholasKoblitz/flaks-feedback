@@ -1,6 +1,8 @@
 
-from flask import Flask, render_template, redirect, session, flash
-from models import db, connect_db, User
+from re import U
+import re
+from flask import Flask, render_template, redirect, session, flash, request
+from models import db, connect_db, User, Feedback
 from forms import CreateUserForm, LoginUserForm
 
 
@@ -39,7 +41,7 @@ def get_register_form():
         db.session.commit()
         session["username"] = user.username
 
-        return redirect("/secret")
+        return redirect(f"/users/{user.username}")
     else:
         return render_template("register.html", form=form)
 
@@ -76,28 +78,85 @@ def logout_user():
     return redirect("/login")
 
 
-@app.route("/secret")
-def get_secret_page():
-    """Gets the secret web page"""
-
-    if "username" not in session:
-        flash("Please Login In")
-        return redirect("/login")
-    else:
-        return render_template("secret.html")
-
-
+#? --------------User Routes ----------------------
 
 @app.route("/users/<username>")
 def get_user_details(username):
 
     user = User.query.filter_by(username=username).first()
+    feedback = Feedback.query.filter(Feedback.username == user.username).all()
 
     if "username" not in session:
         flash("Please Login In")
         return redirect("/login")
     else:
-        return render_template("user_details.html", user=user)
+        return render_template("user_details.html", user=user, feedback=feedback)
+
+
+@app.route("/users/<username>/delete", methods=["POST"])
+def delete_user(username):
+    """Deletes the given user"""
+
+    user = User.query.filter_by(username=username).first()
+    feedback = Feedback.query.filter(Feedback.username == user.username).all()
+
+
+    if "username" not in session:
+        flash("Please Login")
+        return redirect("/login")
+    else:
+        for item in feedback:
+            item.query.delete()
+        user.query.delete()
+        db.session.commit()
+        session.pop("username")
+        flash("User Deleted")
+        return redirect('/')
+
+    
+
+#? --------------End of User Routes ----------------------
+
+
+#* -----------Feedback Routes-----------------
+
+@app.route("/users/<username>/feedback/add")
+def get_feedback_form(username):
+    """Gets the feedback form"""
+
+    user = User.query.filter_by(username=username).first()
+
+    
+    if "username" not in session:
+        flash("Please Login")
+        return redirect("/login")
+    else:
+        return render_template("feedback.html", user=user)
+
+
+@app.route("/users/<username>/feedback/add", methods=["POST"])
+def feedback_form(username):
+
+    user = User.query.filter_by(username=username).first()
+
+
+    if "username" not in session:
+
+        flash("Please Login")
+        return redirect("/login")
+
+    else:
+
+        title = request.form["title"]
+        content = request.form["content"]
+    
+        feedback = Feedback(title=title, content=content, username=user.username)
+        db.session.add(feedback)
+        db.session.commit()
+        return redirect(f"/users/{user.username}")
+
+
+#* -------------End Feedback Routes ------------------
 
 
 # --------------------------------------

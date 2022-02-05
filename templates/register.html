@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
  
-{% block title %} Register {% endblock %}
+{% block title  %} Register {% endblock %}
 
 
 {% block content %}
 
-    <h1>Sign Up</h1>
+    <h1>Register</h1>
+
+    {% for msg in get_flashed_messages() %}
+        <p>{{msg}}</p>
+    {% endfor %}
 
     <form action="/register", method="POST">
 
@@ -23,8 +27,8 @@
         </span>
 
         {% endfor %}
-        <button>Register</button>
 
+        <button>Sign Up</button>
     </form>
 
 {% endblock %}
