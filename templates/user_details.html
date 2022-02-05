@@ -19,10 +19,10 @@
 
 
     <ul style="list-style-type: none;">
-        <li>{{user.username}}</li>
-        <li>{{user.email}}</li>
-        <li>{{user.first_name}}</li>
-        <li>{{user.last_name}}</li>
+        <li>UserName:{{user.username}}</li>
+        <li>User Email: {{user.email}}</li>
+        <li>First Name: {{user.first_name}}</li>
+        <li>Last Name: {{user.last_name}}</li>
     </ul>
 
     <form action="/users/{{user.username}}/feedback/add">
@@ -31,7 +31,12 @@
 
     <ul>
         {% for data in feedback %}
-            <li>{{data.title}}</li>
+            <li>
+                <a href="/feedback/{{data.id}}/update">{{data.title}}</a>
+                <form action="/feedback/{{data.id}}/delete", method="POST">
+                    <button>X</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
     

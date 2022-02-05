@@ -6,28 +6,7 @@
 
 {% block content %}
 
-
-<!-- <form action="/users/{{user.username}}/add", method="POST">
-
-    
-
-    {% for field in form if field.widget.input_type != 'hidden' %}
-
-    <span>
-        {{field.label}}
-        {{field}}
-
-        {% for error in field.errors %}
-        {{error}}
-        {% endfor %}
-    </span>
-
-    {% endfor %}
-    <button>Submit</button>
-
-</form>  -->
-
-
+<h1>Add Your Feedback</h1>
 
 <form action="/users/{{user.username}}/feedback/add", method="POST">
 

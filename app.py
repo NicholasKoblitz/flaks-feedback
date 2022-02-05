@@ -1,6 +1,3 @@
-
-from re import U
-import re
 from flask import Flask, render_template, redirect, session, flash, request
 from models import db, connect_db, User, Feedback
 from forms import CreateUserForm, LoginUserForm
@@ -113,12 +110,6 @@ def delete_user(username):
         flash("User Deleted")
         return redirect('/')
 
-    
-
-#? --------------End of User Routes ----------------------
-
-
-#* -----------Feedback Routes-----------------
 
 @app.route("/users/<username>/feedback/add")
 def get_feedback_form(username):
@@ -154,9 +145,64 @@ def feedback_form(username):
         db.session.add(feedback)
         db.session.commit()
         return redirect(f"/users/{user.username}")
+    
+
+#? --------------End of User Routes ----------------------
+
+
+#* -----------Feedback Routes-----------------
+
+@app.route("/feedback/<int:feedback_id>/update")
+def get_feedback_update_form(feedback_id):
+    """Gets feedback update form"""
+
+    feedback = Feedback.query.get_or_404(feedback_id)
+    return render_template("feedback_update.html", feedback=feedback)
+
+
+
+@app.route("/feedback/<int:feedback_id>/update", methods=["POST"])
+def update_feedback(feedback_id):
+    """Updates a user's feedback"""
+
+    feedback = Feedback.query.get_or_404(feedback_id)
+
+    if "username" not in session:
+        flash("Please Login in")
+        redirect("/login")
+    else:
+        title = request.form["title"]
+        content = request.form["content"]
+
+        feedback.title = title
+        feedback.content = content
+        
+        db.session.add(feedback)
+        db.session.commit()
+        return redirect(f"/users/{feedback.user.username}")
+
+
+@app.route("/feedback/<int:feedback_id>/delete", methods=["POST"])
+def delete_feedback(feedback_id):
+    """Deletes user feedback"""
+
+    feedback = Feedback.query.get_or_404(feedback_id)
+    user = feedback.user.username
+
+    if "username" not in session:
+        flash("Please Login")
+        return redirect("/login")
+    else:
+
+        db.session.delete(feedback)
+        db.session.commit()
+        return redirect(f"/users/{user}")
+
+
+
 
 
 #* -------------End Feedback Routes ------------------
 
 
-# --------------------------------------
+# --------------------------------------------------------------------
